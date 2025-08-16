@@ -1,6 +1,6 @@
 # IP Address Extractor
 
-A powerful Python script that parses various document formats and extracts IP addresses and ranges, converting them to standardized CIDR notation.
+A powerful Python script that parses various document formats and extracts IP addresses and ranges, converting them to standardized list including single ips and CIDR notation. This format is perfect for use with Nessus, Qualys, Nmap, Horizon3, Pentera and many other vulnerability management and penatration testing tools.
 
 ## Features
 
@@ -197,3 +197,4 @@ Feel free to submit issues, feature requests, or pull requests to improve the sc
 ## License
 
 This script is provided as-is for educational and practical use.
+

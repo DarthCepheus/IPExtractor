@@ -1,0 +1,30 @@
+Network Configuration File
+==========================
+
+Gateway Configuration:
+- Primary Gateway: 192.168.1.1
+- Secondary Gateway: 192.168.1.2
+
+DHCP Configuration:
+- DHCP Range: 192.168.1.100 - 192.168.1.200
+- Excluded IPs: 192.168.1.150, 192.168.1.151
+
+DNS Configuration:
+- Primary DNS: 8.8.8.8
+- Secondary DNS: 8.8.4.4
+- Internal DNS: 10.0.0.10
+
+Network Segments:
+- Internal Network: 192.168.1.0/24
+- DMZ Network: 10.0.0.0/24
+- Management Network: 172.16.0.0/16
+
+Server IPs:
+- Web Server: 203.0.113.10
+- Database Server: 198.51.100.5
+- File Server: 192.168.1.50
+- Mail Server: 192.168.1.25
+
+Monitoring:
+- SNMP Server: 192.168.1.100
+- Log Server: 192.168.1.101

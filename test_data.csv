@@ -1,0 +1,9 @@
+name,ip_address,range,description
+server1,192.168.1.10,192.168.1.1-192.168.1.100,Internal network
+server2,10.0.0.5,10.0.0.0/24,DMZ network
+gateway,192.168.1.1,,Default gateway
+dns1,8.8.8.8,,Google DNS
+dns2,8.8.4.4,,Google DNS backup
+web_server,203.0.113.10,203.0.113.0/24,Public web server
+database,198.51.100.5,198.51.100.0/26,Database server
+monitoring,172.16.0.100,172.16.0.0/16,Monitoring network

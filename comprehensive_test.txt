@@ -1,0 +1,118 @@
+Network Infrastructure Documentation
+====================================
+
+HOSTNAMES AND IP ADDRESSES:
+---------------------------
+web-server-01.example.com - 192.168.1.10
+database-server.example.com - 10.0.0.15
+mail-server.company.local - 172.16.0.25
+dns-primary.example.com - 8.8.8.8
+dns-secondary.example.com - 8.8.4.4
+load-balancer-01.example.com - 203.0.113.10
+load-balancer-02.example.com - 203.0.113.11
+monitoring-server.example.com - 198.51.100.5
+backup-server.example.com - 192.168.1.50
+gateway-router.example.com - 192.168.1.1
+
+EXISTING CIDR NOTATIONS:
+------------------------
+Internal Network: 192.168.1.0/24
+DMZ Network: 10.0.0.0/24
+Management Network: 172.16.0.0/16
+Public Web Servers: 203.0.113.0/24
+Database Cluster: 198.51.100.0/26
+VPN Network: 10.10.0.0/16
+Guest Network: 192.168.100.0/24
+IoT Network: 192.168.200.0/25
+
+LONGHAND IP RANGES:
+--------------------
+DHCP Pool 1: 192.168.1.100 - 192.168.1.200
+DHCP Pool 2: 10.0.0.100 - 10.0.0.150
+Reserved Range: 172.16.0.10 - 172.16.0.50
+Load Balancer Pool: 203.0.113.20 - 203.0.113.30
+Database Replicas: 198.51.100.10 - 198.51.100.20
+Backup Servers: 192.168.1.200 - 192.168.1.250
+Monitoring Agents: 10.10.0.1 - 10.10.0.100
+Guest DHCP: 192.168.100.100 - 192.168.100.200
+
+MIXED CONTENT WITH IPs:
+------------------------
+The following servers are located in our primary data center:
+- Primary web server (web-01) at 192.168.1.10
+- Secondary web server (web-02) at 192.168.1.11
+- Database master at 10.0.0.15
+- Database slave at 10.0.0.16
+- Mail server at 172.16.0.25
+- Backup server at 192.168.1.50
+
+NETWORK SEGMENTS:
+------------------
+Production: 192.168.1.0/24 (192.168.1.1 - 192.168.1.254)
+Development: 192.168.2.0/24 (192.168.2.1 - 192.168.2.254)
+Testing: 192.168.3.0/24 (192.168.3.1 - 192.168.3.254)
+Staging: 192.168.4.0/24 (192.168.4.1 - 192.168.4.254)
+
+FIREWALL RULES:
+----------------
+Allow traffic from 10.0.0.0/8 to 192.168.0.0/16
+Block traffic from 203.0.113.0/24 to internal networks
+Permit management access from 172.16.0.0/16
+Restrict guest access to 192.168.100.0/24
+
+LOAD BALANCER CONFIGURATION:
+-----------------------------
+Pool 1: 203.0.113.10 - 203.0.113.15
+Pool 2: 203.0.113.20 - 203.0.113.25
+Pool 3: 203.0.113.30 - 203.0.113.35
+
+MONITORING AND LOGGING:
+------------------------
+SNMP servers: 192.168.1.100, 192.168.1.101, 192.168.1.102
+Syslog servers: 10.0.0.20, 10.0.0.21
+Netflow collectors: 172.16.0.100, 172.16.0.101
+Metrics servers: 198.51.100.30, 198.51.100.31
+
+BACKUP AND DISASTER RECOVERY:
+------------------------------
+Primary backup: 192.168.1.200
+Secondary backup: 192.168.1.201
+Tertiary backup: 192.168.1.202
+Offsite backup: 10.10.0.200
+Cloud backup gateway: 203.0.113.100
+
+VPN CONFIGURATION:
+------------------
+VPN server: 10.10.0.1
+VPN clients: 10.10.0.100 - 10.10.0.200
+VPN admin: 10.10.0.10 - 10.10.0.20
+
+SECURITY APPLIANCES:
+--------------------
+IDS/IPS: 192.168.1.5, 192.168.1.6
+Firewall: 192.168.1.1, 10.0.0.1
+WAF: 203.0.113.5, 203.0.113.6
+SIEM: 172.16.0.200
+
+APPLICATION SERVERS:
+--------------------
+Web app servers: 192.168.1.20 - 192.168.1.29
+API servers: 192.168.1.30 - 192.168.1.39
+File servers: 192.168.1.40 - 192.168.1.49
+Print servers: 192.168.1.60 - 192.168.1.69
+
+DATABASE SERVERS:
+-----------------
+Primary DB: 10.0.0.15
+Secondary DB: 10.0.0.16
+Read replicas: 10.0.0.20 - 10.0.0.25
+Backup DB: 10.0.0.30
+
+STORAGE SYSTEMS:
+----------------
+SAN: 172.16.0.10 - 172.16.0.15
+NAS: 172.16.0.20 - 172.16.0.25
+Object storage: 172.16.0.30 - 172.16.0.35
+
+END OF DOCUMENT
+===============

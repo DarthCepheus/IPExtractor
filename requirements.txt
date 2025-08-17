@@ -1,0 +1,11 @@
+# Optional dependencies for enhanced functionality
+# Install with: pip install -r requirements.txt
+
+# For Excel file support
+pandas>=1.3.0
+openpyxl>=3.0.0
+
+# Note: The script works without these dependencies but with limited functionality
+# - Without pandas: Excel files cannot be parsed
+# - Without openpyxl: Some Excel formats may not be supported
+# - The core IP extraction functionality works with just Python standard library

@@ -1,0 +1,27 @@
+Network Configuration with Duplicates
+====================================
+
+Individual IPs (some duplicated):
+- Server 1: 192.168.1.10
+- Server 2: 192.168.1.10  (duplicate)
+- Server 3: 10.0.0.5
+- Server 4: 10.0.0.5      (duplicate)
+- Gateway: 192.168.1.1
+- DNS: 8.8.8.8
+- DNS: 8.8.8.8            (duplicate)
+
+Network Ranges (some duplicated):
+- Production: 192.168.1.0/24
+- Development: 192.168.1.0/24  (duplicate)
+- DMZ: 10.0.0.0/24
+- Backup: 10.0.0.0/24         (duplicate)
+
+Mixed duplicates:
+- Load balancer: 203.0.113.10
+- Load balancer backup: 203.0.113.10  (duplicate)
+- Public network: 203.0.113.0/24
+- Public network backup: 203.0.113.0/24  (duplicate)
+
+Individual IPs that are also in ranges:
+- 192.168.1.100 (this IP is within 192.168.1.0/24)
+- 10.0.0.100 (this IP is within 10.0.0.0/24)

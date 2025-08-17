@@ -1,0 +1,36 @@
+Network Configuration with Mixed IP Types
+==========================================
+
+Private Network Infrastructure:
+- Gateway: 192.168.1.1
+- DHCP Server: 192.168.1.100
+- File Server: 192.168.1.50
+- Print Server: 192.168.1.25
+- Internal Network: 192.168.1.0/24
+
+DMZ Network:
+- Web Server: 10.0.0.10
+- Database Server: 10.0.0.20
+- DMZ Network: 10.0.0.0/24
+
+Management Network:
+- Admin Workstation: 172.16.0.100
+- Monitoring Server: 172.16.0.200
+- Management Network: 172.16.0.0/16
+
+Public Internet Services:
+- Google DNS Primary: 8.8.8.8
+- Google DNS Secondary: 8.8.4.4
+- Cloudflare DNS: 1.1.1.1
+- Web Server: 203.0.113.10
+- Mail Server: 198.51.100.5
+- Public Network: 203.0.113.0/24
+
+Special Addresses:
+- Loopback: 127.0.0.1
+- Link Local: 169.254.1.1
+- Multicast: 224.0.0.1
+- Reserved: 240.0.0.1
+
+Mixed Range Example:
+- Mixed Network: 172.20.0.0/16 (contains both private and public IPs)

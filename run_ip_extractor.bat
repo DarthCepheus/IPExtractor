@@ -1,5 +1,5 @@
 @echo off
-REM IP Address Parsing Solution - Interactive Guide
+REM IP Address Parsing Solution - Interactive Utility
 REM This batch file walks users through the complete IP parsing workflow
 
 echo.
@@ -20,7 +20,7 @@ echo.
 echo ___________// __/  ________// __/ _/ / /_____
 echo.
 echo                    CAPYBARA
-echo              IP Address Parsing Guide
+echo              IP Address Parsing Utility
 echo.
 echo  "Let me help you clean up those messy IP lists!"
 echo.
@@ -28,14 +28,14 @@ echo.
 REM Check if Python is available
 python --version >nul 2>&1
 if %errorlevel% equ 0 (
-    echo [OK] Python found! Running interactive guide...
+    echo [OK] Python found! Running interactive utility...
     echo.
     goto :start_guide
 )
 
 python3 --version >nul 2>&1
 if %errorlevel% equ 0 (
-    echo [OK] Python3 found! Running interactive guide...
+    echo [OK] Python3 found! Running interactive utility...
     echo.
     goto :start_guide
 )
@@ -99,7 +99,7 @@ exit /b 1
 if not defined PYTHON_CMD set PYTHON_CMD=python
 
 echo Welcome to the IP Address Parsing Solution!
-echo This guide will walk you through the complete workflow.
+echo This utility will walk you through the complete workflow.
 echo.
 
 REM Step 1: Get input file

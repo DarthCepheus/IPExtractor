@@ -1,4 +1,4 @@
-# IP Address Parsing Solution - Interactive Guide
+# IP Address Parsing Solution - Interactive Utility
 # This PowerShell script walks users through the complete IP parsing workflow
 
 Write-Host ""
@@ -19,7 +19,7 @@ Write-Host ""
 Write-Host " ___________// __/  ________// __/ _/ / /_____"
 Write-Host ""
 Write-Host "                    CAPYBARA"
-Write-Host "              IP Address Parsing Guide"
+Write-Host "              IP Address Parsing Utility"
 Write-Host ""
 Write-Host '  "Let me help you clean up those messy IP lists!"'
 Write-Host ""
@@ -122,7 +122,7 @@ function Run-PythonScript {
 
 # Main workflow
 Write-Host "Welcome to the IP Address Parsing Solution!" -ForegroundColor Green
-Write-Host "This guide will walk you through the complete workflow." -ForegroundColor White
+Write-Host "This utility will walk you through the complete workflow." -ForegroundColor White
 Write-Host ""
 
 # Find Python

@@ -226,8 +226,8 @@ IP_Address_Toolkit/
 ├── public_ip_finder.py      # Extract external IPs only
 ├── private_ip_finder.py     # Extract internal IPs only
 ├── requirements.txt          # Python dependencies
-├── run_ip_extractor.bat     # Windows batch file helper
-├── run_ip_extractor.ps1     # Windows PowerShell helper
+├── capybara_ip_utility.bat  # Windows batch file utility
+├── capybara_ip_utility.ps1  # Windows PowerShell utility
 ├── INSTALL.md               # Python installation guide
 ├── README.md                # This comprehensive guide
 └── tests/                   # Test files and sample data
@@ -254,6 +254,25 @@ IP_Address_Toolkit/
 ## Installation
 
 See `INSTALL.md` for detailed Python installation instructions.
+
+## Windows Utility
+
+For Windows users, two utility scripts are provided to simplify the workflow:
+
+- **`capybara_ip_utility.bat`** - Batch file utility (double-click to run)
+- **`capybara_ip_utility.ps1`** - PowerShell utility (run with `PowerShell -ExecutionPolicy Bypass -File .\capybara_ip_utility.ps1`)
+
+**Requirements:**
+- Python 3.6+ installed on the system
+- Python executable in PATH or common installation locations
+- Windows 10/11
+
+**Setup:**
+1. Ensure Python is installed (see `INSTALL.md`)
+2. Place utility files in the same directory as Python scripts
+3. Run the utility of your choice
+
+The utility will automatically find Python and guide you through the complete workflow.
 
 ---
 

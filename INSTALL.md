@@ -63,12 +63,12 @@ python ip_extractor.py <file_path>
 
 ### Method 2: Windows Batch File
 ```bash
-run_ip_extractor.bat <file_path>
+capybara_ip_utility.bat
 ```
 
 ### Method 3: PowerShell Script
 ```powershell
-.\run_ip_extractor.ps1 <file_path>
+PowerShell -ExecutionPolicy Bypass -File .\capybara_ip_utility.ps1
 ```
 
 ## Troubleshooting

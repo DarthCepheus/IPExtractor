@@ -173,9 +173,10 @@ Write-Host ""
 Write-Host "Step 2: Clean & Deduplicate" -ForegroundColor Magenta
 Write-Host "===========================" -ForegroundColor Magenta
 
-# Generate default filename by appending to input filename
+# Generate default filename by appending to input filename in the same directory
+$inputDir = [System.IO.Path]::GetDirectoryName($inputFile)
 $baseName = [System.IO.Path]::GetFileNameWithoutExtension($inputFile)
-$defaultCleanFile = "${baseName}_extrctd.txt"
+$defaultCleanFile = [System.IO.Path]::Combine($inputDir, "${baseName}_extrctd.txt")
 
 $cleanFile = Get-UserInput "What should we name the cleaned output file?" $defaultCleanFile "txt"
 
@@ -203,12 +204,12 @@ Write-Host "Now let's separate your IPs by type:" -ForegroundColor Yellow
 Write-Host ""
 
 # Public IPs
-$defaultPublicFile = "${baseName}_public.txt"
+$defaultPublicFile = [System.IO.Path]::Combine($inputDir, "${baseName}_public.txt")
 $publicFile = Get-UserInput "What should we name the public IPs file?" $defaultPublicFile "txt"
 Run-PythonScript "public_ip_finder.py" "$cleanFile --output $publicFile" "Extracting public IP addresses"
 
 # Private IPs
-$defaultPrivateFile = "${baseName}_private.txt"
+$defaultPrivateFile = [System.IO.Path]::Combine($inputDir, "${baseName}_private.txt")
 $privateFile = Get-UserInput "What should we name the private IPs file?" $defaultPrivateFile "txt"
 Run-PythonScript "private_ip_finder.py" "$cleanFile --output $privateFile" "Extracting private IP addresses"
 

@@ -127,8 +127,11 @@ echo Step 2: Clean ^& Deduplicate
 echo ===========================
 echo.
 
-set /p clean_file="What should we name the cleaned output file? (default: %input_file:~0,-4%_extrctd.txt): "
-if "%clean_file%"=="" set clean_file=%input_file:~0,-4%_extrctd.txt
+REM Get the directory and filename of the input file
+for %%F in ("%input_file%") do set "input_dir=%%~dpF" && set "input_name=%%~nF"
+
+set /p clean_file="What should we name the cleaned output file? (default: %input_name%_extrctd.txt): "
+if "%clean_file%"=="" set clean_file=%input_dir%%input_name%_extrctd.txt
 if not "%clean_file:~-4%"==".txt" set clean_file=%clean_file%.txt
 
 echo [RUNNING] Cleaning and deduplicating IP addresses...
@@ -159,8 +162,8 @@ echo Now let's separate your IPs by type:
 echo.
 
 REM Public IPs
-set /p public_file="What should we name the public IPs file? (default: %input_file:~0,-4%_public.txt): "
-if "%public_file%"=="" set public_file=%input_file:~0,-4%_public.txt
+set /p public_file="What should we name the public IPs file? (default: %input_name%_public.txt): "
+if "%public_file%"=="" set public_file=%input_dir%%input_name%_public.txt
 if not "%public_file:~-4%"==".txt" set public_file=%public_file%.txt
 
 echo [RUNNING] Extracting public IP addresses...
@@ -168,8 +171,8 @@ echo [RUNNING] Extracting public IP addresses...
 echo.
 
 REM Private IPs
-set /p private_file="What should we name the private IPs file? (default: %input_file:~0,-4%_private.txt): "
-if "%private_file%"=="" set private_file=%input_file:~0,-4%_private.txt
+set /p private_file="What should we name the private IPs file? (default: %input_name%_private.txt): "
+if "%private_file%"=="" set private_file=%input_dir%%input_name%_private.txt
 if not "%private_file:~-4%"==".txt" set private_file=%private_file%.txt
 
 echo [RUNNING] Extracting private IP addresses...

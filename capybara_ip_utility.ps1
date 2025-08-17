@@ -33,7 +33,7 @@ function Find-Python {
         try {
             $versionOutput = & $cmd --version 2>&1
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "[OK] Python found: $versionOutput" -ForegroundColor Green
+                Write-Host ('[OK] Python found: {0}' -f $versionOutput) -ForegroundColor Green
                 return $cmd
             }
         }
@@ -55,7 +55,7 @@ function Find-Python {
                 try {
                     $versionOutput = & $pythonExe --version 2>&1
                     if ($LASTEXITCODE -eq 0) {
-                        Write-Host "[OK] Python found: $versionOutput" -ForegroundColor Green
+                        Write-Host ('[OK] Python found: {0}' -f $versionOutput) -ForegroundColor Green
                         return $pythonExe
                     }
                 }
@@ -92,7 +92,7 @@ function Get-UserInput {
 }
 
 # Function to run Python script with error handling
-function Run-PythonScript {
+function Invoke-PythonScript {
     param(
         [string]$ScriptName,
         [string]$Arguments,
@@ -100,22 +100,22 @@ function Run-PythonScript {
     )
     
     Write-Host ""
-    Write-Host "[RUNNING] $Description" -ForegroundColor Cyan
+    Write-Host ('[RUNNING] {0}' -f $Description) -ForegroundColor Cyan
     Write-Host "Running: $python $ScriptName $Arguments" -ForegroundColor Gray
     
     try {
         $argArray = $Arguments -split " "
         & $python $ScriptName @argArray
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "[OK] $Description completed successfully!" -ForegroundColor Green
+            Write-Host ('[OK] {0} completed successfully!' -f $Description) -ForegroundColor Green
             return $true
         } else {
-            Write-Host "[ERROR] $Description failed with exit code: $LASTEXITCODE" -ForegroundColor Red
+            Write-Host ('[ERROR] {0} failed with exit code: {1}' -f $Description, $LASTEXITCODE) -ForegroundColor Red
             return $false
         }
     }
     catch {
-        Write-Host "[ERROR] Error running $ScriptName - An error occurred" -ForegroundColor Red
+        Write-Host ('[ERROR] Error running {0} - An error occurred' -f $ScriptName) -ForegroundColor Red
         return $false
     }
 }
@@ -128,7 +128,7 @@ Write-Host ""
 # Find Python
 $python = Find-Python
 if (-not $python) {
-    Write-Host "[ERROR] Python not found!" -ForegroundColor Red
+    Write-Host '[ERROR] Python not found!' -ForegroundColor Red
     Write-Host ""
     Write-Host "To use this toolkit, you need to install Python:" -ForegroundColor Yellow
     Write-Host ""
@@ -160,13 +160,13 @@ if ([string]::IsNullOrWhiteSpace($inputFile)) {
     Write-Host "Using default test file: $inputFile" -ForegroundColor Yellow
 }
 if (-not (Test-Path $inputFile)) {
-    Write-Host "[ERROR] File not found: $inputFile" -ForegroundColor Red
+    Write-Host ('[ERROR] File not found: {0}' -f $inputFile) -ForegroundColor Red
     Write-Host "Please check the file path and try again." -ForegroundColor Yellow
     Read-Host "Press Enter to exit"
     exit 1
 }
 
-Write-Host "[OK] Input file found: $inputFile" -ForegroundColor Green
+Write-Host ('[OK] Input file found: {0}' -f $inputFile) -ForegroundColor Green
 Write-Host ""
 
 # Step 2: Clean and deduplicate
@@ -180,9 +180,9 @@ $defaultCleanFile = [System.IO.Path]::Combine($inputDir, "${baseName}_extrctd.tx
 
 $cleanFile = Get-UserInput "What should we name the cleaned output file?" $defaultCleanFile "txt"
 
-$success = Run-PythonScript "ip_extractor.py" "$inputFile --output $cleanFile" "Cleaning and deduplicating IP addresses"
+$success = Invoke-PythonScript "ip_extractor.py" "$inputFile --output $cleanFile" "Cleaning and deduplicating IP addresses"
 if (-not $success) {
-    Write-Host "[ERROR] Failed to clean IP addresses. Please check your input file." -ForegroundColor Red
+    Write-Host '[ERROR] Failed to clean IP addresses. Please check your input file.' -ForegroundColor Red
     Read-Host "Press Enter to exit"
     exit 1
 }
@@ -193,7 +193,7 @@ Write-Host "Step 3: Analyze & Count" -ForegroundColor Magenta
 Write-Host "=======================" -ForegroundColor Magenta
 
 Write-Host "Let's see what we're working with:" -ForegroundColor Yellow
-Run-PythonScript "ip_counter.py" "$cleanFile --detailed" "Analyzing IP addresses"
+Invoke-PythonScript "ip_counter.py" "$cleanFile --detailed" "Analyzing IP addresses"
 
 # Step 4: Filter by type
 Write-Host ""
@@ -206,22 +206,22 @@ Write-Host ""
 # Public IPs
 $defaultPublicFile = [System.IO.Path]::Combine($inputDir, "${baseName}_public.txt")
 $publicFile = Get-UserInput "What should we name the public IPs file?" $defaultPublicFile "txt"
-Run-PythonScript "public_ip_finder.py" "$cleanFile --output $publicFile" "Extracting public IP addresses"
+Invoke-PythonScript "public_ip_finder.py" "$cleanFile --output $publicFile" "Extracting public IP addresses"
 
 # Private IPs
 $defaultPrivateFile = [System.IO.Path]::Combine($inputDir, "${baseName}_private.txt")
 $privateFile = Get-UserInput "What should we name the private IPs file?" $defaultPrivateFile "txt"
-Run-PythonScript "private_ip_finder.py" "$cleanFile --output $privateFile" "Extracting private IP addresses"
+Invoke-PythonScript "private_ip_finder.py" "$cleanFile --output $privateFile" "Extracting private IP addresses"
 
 # Summary
 Write-Host ""
-Write-Host "[COMPLETE] Workflow Complete!" -ForegroundColor Green
+Write-Host '[COMPLETE] Workflow Complete!' -ForegroundColor Green
 Write-Host "===================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Files created:" -ForegroundColor Yellow
-Write-Host "  [FILE] $cleanFile - Cleaned and deduplicated IP list" -ForegroundColor White
-Write-Host "  [FILE] $publicFile - External/Internet-facing IPs" -ForegroundColor White
-Write-Host "  [FILE] $privateFile - Internal/private network IPs" -ForegroundColor White
+Write-Host ('  [FILE] {0} - Cleaned and deduplicated IP list' -f $cleanFile) -ForegroundColor White
+Write-Host ('  [FILE] {0} - External/Internet-facing IPs' -f $publicFile) -ForegroundColor White
+Write-Host ('  [FILE] {0} - Internal/private network IPs' -f $privateFile) -ForegroundColor White
 Write-Host ""
 Write-Host "You can now use these files for:" -ForegroundColor Cyan
 Write-Host "  • Security scanner configuration" -ForegroundColor White

@@ -2,7 +2,7 @@
 
 A comprehensive set of Python scripts for cleaning, analyzing, and organizing IP address lists from clients. Perfect for security analysts, network engineers, and anyone who needs to process messy IP lists into clean, professional output.
 
-## 🎯 What This Toolkit Does
+## What This Toolkit Does
 
 When clients send you messy lists of IP addresses with duplicates and mixed formats, this toolkit provides a complete solution:
 
@@ -11,7 +11,7 @@ When clients send you messy lists of IP addresses with duplicates and mixed form
 3. **Filter by Type** → `public_ip_finder.py` and `private_ip_finder.py` separate external vs internal IPs
 4. **Consolidate Ranges** → Automatically groups sequential IPs into efficient CIDR blocks
 
-## 🚀 Quick Start Workflow
+## Quick Start Workflow
 
 ### 1. **Clean & Deduplicate** (Always start here)
 ```bash
@@ -35,7 +35,7 @@ python public_ip_finder.py clean_deduplicated.txt --output external_targets.txt
 python private_ip_finder.py clean_deduplicated.txt --output internal_targets.txt
 ```
 
-## 🛠️ Individual Tool Details
+## Individual Tool Details
 
 ### **IP Extractor** (`ip_extractor.py`)
 **Purpose:** Clean up messy IP lists and remove duplicates
@@ -114,7 +114,7 @@ python private_ip_finder.py clean_deduplicated.txt --output internal_targets.txt
 192.168.1.0/30, 10.0.0.0/24, 127.0.0.1
 ```
 
-## 📋 Complete Example Workflow
+## Complete Example Workflow
 
 ### **Scenario:** Client sends messy IP list for security assessment
 
@@ -151,7 +151,7 @@ python private_ip_finder.py clean_list.txt --output internal_targets.txt
 - `external_targets.txt` → External security scanner configuration
 - `internal_targets.txt` → Internal network scanner configuration
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### **CIDR Consolidation**
 All tools automatically consolidate sequential IPs into efficient CIDR ranges:
@@ -168,7 +168,7 @@ All tools automatically consolidate sequential IPs into efficient CIDR ranges:
 - Detailed analysis mode or simple comma-separated lists
 - Verbose mode for debugging
 
-## 📚 Common Use Cases
+## Common Use Cases
 
 ### **Security Assessments**
 1. Extract client IP list → Clean with `ip_extractor.py`
@@ -194,7 +194,7 @@ All tools automatically consolidate sequential IPs into efficient CIDR ranges:
 3. Separate internal vs external with finder scripts
 4. Generate clean reports
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### **Common Issues & Solutions**
 
@@ -217,7 +217,7 @@ All tools automatically consolidate sequential IPs into efficient CIDR ranges:
 - Use `--verbose` flag to see what the script is doing
 - Check that your input file contains valid IP addresses
 
-## 📁 File Structure
+## File Structure
 
 ```
 IP_Address_Toolkit/
@@ -229,10 +229,15 @@ IP_Address_Toolkit/
 ├── run_ip_extractor.bat     # Windows batch file helper
 ├── run_ip_extractor.ps1     # Windows PowerShell helper
 ├── INSTALL.md               # Python installation guide
-└── README.md                # This comprehensive guide
+├── README.md                # This comprehensive guide
+└── tests/                   # Test files and sample data
+    ├── comprehensive_test.txt
+    ├── overlap_test.txt
+    ├── test_data.csv
+    └── ... (other test files)
 ```
 
-## 🎯 Pro Tips
+## Pro Tips
 
 1. **Always start with `ip_extractor.py`** - Clean data first, then analyze
 2. **Use descriptive filenames** - `client_name_clean.txt`, `client_name_external.txt`
@@ -241,12 +246,12 @@ IP_Address_Toolkit/
 5. **Use `--detailed` first** - Understand what you're working with
 6. **Keep original client files** - Never overwrite source data
 
-## 🔗 Dependencies
+## Dependencies
 
 - **Python 3.6+** (included in most modern systems)
 - **Optional:** `pandas` and `openpyxl` for Excel file support
 
-## 📖 Installation
+## Installation
 
 See `INSTALL.md` for detailed Python installation instructions.
 

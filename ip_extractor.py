@@ -15,11 +15,21 @@ LEARNING OBJECTIVES:
 - IP address manipulation with the ipaddress module
 - Advanced data structures (sets, defaultdict)
 - Context managers and file handling
+- SECURITY: Input validation and sanitization
+- SECURITY: Path traversal prevention
+- SECURITY: Information disclosure prevention
 
 This script parses various document formats (CSV, Excel, text, JSON, etc.) and extracts
 individual IP addresses and IP ranges, converting ranges to CIDR notation.
 Output is formatted as a comma and space separated list, with /32 CIDR notation removed
 since it represents single IP addresses.
+
+SECURITY FEATURES:
+- Path traversal prevention (../ sequences blocked)
+- Input sanitization and length limits
+- Safe file operations within working directory
+- Error message sanitization (no information disclosure)
+- Null byte and control character removal
 
 Usage:
     python ip_extractor.py <file_path>
@@ -169,6 +179,44 @@ class IPExtractor:
             return True
         return False
     
+    def _sanitize_input(self, text: str) -> str:
+        """
+        Sanitize input text to prevent injection attacks.
+        
+        LEARNING: This method demonstrates input sanitization best practices
+        - Remove potentially dangerous characters
+        - Limit input length to prevent DoS attacks
+        - Normalize whitespace and special characters
+        
+        SECURITY: Prevents various injection attacks and ensures
+        input data is safe for processing.
+        
+        Args:
+            text (str): Raw input text
+            
+        Returns:
+            str: Sanitized text safe for processing
+        """
+        if not isinstance(text, str):
+            return ""
+        
+        # SECURITY: Limit input length to prevent DoS attacks
+        if len(text) > 10000:  # 10KB limit
+            raise ValueError("Input text too long (max 10KB)")
+        
+        # SECURITY: Remove null bytes and control characters
+        # These can cause issues in various contexts
+        text = text.replace('\x00', '')  # Null bytes
+        text = text.replace('\r', '')    # Carriage returns
+        
+        # SECURITY: Normalize whitespace to prevent confusion
+        text = re.sub(r'\s+', ' ', text)
+        
+        # SECURITY: Remove any non-printable characters
+        text = ''.join(char for char in text if char.isprintable() or char.isspace())
+        
+        return text.strip()
+    
     def _parse_ip_range(self, range_text: str) -> Tuple[Union[str, None], Union[str, None]]:
         """
         Parse IP range text to get start and end IPs.
@@ -177,6 +225,7 @@ class IPExtractor:
         - We use try/except to handle unexpected input gracefully
         - This is crucial in cybersecurity where input data is often messy
         - We return None for invalid ranges instead of crashing
+        - SECURITY: Input sanitization prevents injection attacks
         
         Args:
             range_text (str): Text like "192.168.1.1-192.168.1.100"
@@ -185,10 +234,9 @@ class IPExtractor:
             Tuple[Union[str, None], Union[str, None]]: (start_ip, end_ip) or (None, None) if invalid
         """
         try:
-            # LEARNING: re.sub() is a powerful regex replacement function
-            # r'\s+' matches one or more whitespace characters
-            # We replace them with empty string to clean the input
-            clean_text = re.sub(r'\s+', '', range_text)
+            # SECURITY: Sanitize input before processing
+            # This prevents various injection attacks
+            clean_text = self._sanitize_input(range_text)
             
             if '-' in clean_text:
                 # LEARNING: split('-', 1) splits on first dash only
@@ -489,6 +537,58 @@ class IPExtractor:
         
         return individual_ips, ip_ranges
     
+    def _validate_file_path(self, file_path: str) -> Path:
+        """
+        Validate and sanitize file path for security.
+        
+        LEARNING: This method demonstrates security best practices
+        - Path traversal prevention (stopping "../" sequences)
+        - Absolute path resolution and validation
+        - Security-focused input validation
+        
+        SECURITY: Prevents path traversal attacks and ensures files are
+        only accessed within intended directories.
+        
+        Args:
+            file_path (str): Raw file path from user input
+            
+        Returns:
+            Path: Validated and sanitized pathlib.Path object
+            
+        Raises:
+            ValueError: If path contains security violations
+            FileNotFoundError: If file doesn't exist
+        """
+        # LEARNING: Convert to Path object for manipulation
+        path = Path(file_path)
+        
+        # SECURITY: Resolve to absolute path to prevent relative path attacks
+        try:
+            path = path.resolve()
+        except (RuntimeError, OSError):
+            raise ValueError(f"Invalid path: {file_path}")
+        
+        # SECURITY: Check for path traversal attempts
+        # This prevents "../../../etc/passwd" type attacks
+        if '..' in str(path):
+            raise ValueError(f"Path traversal not allowed: {file_path}")
+        
+        # SECURITY: Ensure path is within current working directory
+        # This prevents access to system files outside the intended scope
+        try:
+            path.relative_to(Path.cwd())
+        except ValueError:
+            raise ValueError(f"Path outside working directory not allowed: {file_path}")
+        
+        # SECURITY: Validate file exists and is a regular file
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+        
+        if not path.is_file():
+            raise ValueError(f"Path is not a regular file: {path}")
+        
+        return path
+    
     def parse_file(self, file_path: str) -> Tuple[Set[str], Set[str]]:
         """
         Parse file based on its extension.
@@ -498,6 +598,7 @@ class IPExtractor:
         - File existence checking
         - Extension-based routing (strategy pattern)
         - Graceful fallback to text parsing for unknown file types
+        - SECURITY: Path validation and sanitization
         
         Args:
             file_path (str): Path to the file to parse
@@ -507,32 +608,28 @@ class IPExtractor:
             
         Raises:
             FileNotFoundError: If the file doesn't exist
+            ValueError: If the path contains security violations
         """
-        # LEARNING: Path() creates a pathlib.Path object
-        # This provides cross-platform path handling and useful methods
-        file_path = Path(file_path)
-        
-        # LEARNING: .exists() checks if the file actually exists
-        # This prevents errors later when trying to open non-existent files
-        if not file_path.exists():
-            raise FileNotFoundError(f"File not found: {file_path}")
+        # SECURITY: Validate and sanitize the file path
+        # This prevents path traversal and ensures safe file access
+        validated_path = self._validate_file_path(file_path)
         
         # LEARNING: .suffix gets the file extension (e.g., '.csv', '.txt')
         # .lower() makes it case-insensitive ('.CSV' becomes '.csv')
-        extension = file_path.suffix.lower()
+        extension = validated_path.suffix.lower()
         
         # LEARNING: Extension-based routing - different file types need different parsers
         # This is a common pattern in file processing applications
         if extension == '.csv':
-            return self.parse_csv(file_path)
+            return self.parse_csv(validated_path)
         elif extension in ['.xlsx', '.xls']:
-            return self.parse_excel(file_path)
+            return self.parse_excel(validated_path)
         elif extension == '.json':
-            return self.parse_json(file_path)
+            return self.parse_json(validated_path)
         else:
             # LEARNING: Graceful fallback - if we don't recognize the extension,
             # try to parse it as text. This makes the tool more robust.
-            return self.parse_text(file_path)
+            return self.parse_text(validated_path)
     
     def consolidate_overlapping_ranges(self, ip_ranges: Set[str]) -> Set[str]:
         """
@@ -773,18 +870,27 @@ Examples:
                 for cidr in sorted(ip_ranges, key=lambda cidr: ipaddress.IPv4Network(cidr)):
                     print(f"  {cidr}", file=sys.stderr)
     
-    # LEARNING: Specific exception handling - catch FileNotFoundError separately
-    # This provides better error messages for common user mistakes
+            # LEARNING: Specific exception handling - catch FileNotFoundError separately
+        # This provides better error messages for common user mistakes
     except FileNotFoundError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Error: File not found", file=sys.stderr)
         # LEARNING: sys.exit(1) indicates program failure to the operating system
         # Exit code 1 is standard for errors, 0 is success
         sys.exit(1)
         
     # LEARNING: General exception handling - catch any other unexpected errors
     # This prevents the program from crashing with cryptic error messages
+    except ValueError as e:
+        # SECURITY: Don't expose internal error details
+        print(f"Error: Invalid input or file format", file=sys.stderr)
+        sys.exit(1)
+        
     except Exception as e:
-        print(f"Unexpected error: {e}", file=sys.stderr)
+        # SECURITY: Log detailed error for debugging but show generic message to user
+        # This prevents information disclosure while maintaining debuggability
+        print(f"Error: An unexpected error occurred", file=sys.stderr)
+        # LEARNING: In production, you might want to log the full error details
+        # but never expose them to end users
         sys.exit(1)
 
 

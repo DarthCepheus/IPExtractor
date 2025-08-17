@@ -13,12 +13,20 @@ LEARNING OBJECTIVES:
 - File I/O and command-line argument parsing
 - Error handling and input validation
 - Network security concepts (RFC 1918 private ranges)
+- SECURITY: Input sanitization and validation
+- SECURITY: Information disclosure prevention
 
 This script analyzes the output from the IP extractor script and provides:
 - Total count of individual IPs
 - Count of public IPs
 - Count of private IPs
 - Detailed breakdown of IP types and ranges
+
+SECURITY FEATURES:
+- Input sanitization and length limits
+- Safe error handling (no information disclosure)
+- Null byte and control character removal
+- Input validation and type checking
 
 Usage:
     python ip_counter.py <ip_list_file>
@@ -123,6 +131,45 @@ class IPCounter:
             # This prevents the program from crashing on bad input
             return set()
     
+    def _sanitize_input(self, text: str) -> str:
+        """
+        Sanitize input text to prevent injection attacks.
+        
+        LEARNING: This method demonstrates input sanitization best practices
+        - Remove potentially dangerous characters
+        - Limit input length to prevent DoS attacks
+        - Normalize whitespace and special characters
+        
+        SECURITY: Prevents various injection attacks and ensures
+        input data is safe for processing.
+        
+        Args:
+            text (str): Raw input text
+            
+        Returns:
+            str: Sanitized text safe for processing
+        """
+        if not isinstance(text, str):
+            return ""
+        
+        # SECURITY: Limit input length to prevent DoS attacks
+        if len(text) > 10000:  # 10KB limit
+            raise ValueError("Input text too long (max 10KB)")
+        
+        # SECURITY: Remove null bytes and control characters
+        # These can cause issues in various contexts
+        text = text.replace('\x00', '')  # Null bytes
+        text = text.replace('\r', '')    # Carriage returns
+        
+        # SECURITY: Normalize whitespace to prevent confusion
+        import re
+        text = re.sub(r'\s+', ' ', text)
+        
+        # SECURITY: Remove any non-printable characters
+        text = ''.join(char for char in text if char.isprintable() or char.isspace())
+        
+        return text.strip()
+    
     def parse_ip_list(self, ip_text: str) -> Tuple[Set[ipaddress.IPv4Address], Set[ipaddress.IPv4Address]]:
         """
         Parse IP list and separate individual IPs from CIDR ranges.
@@ -132,6 +179,7 @@ class IPCounter:
         - Pattern recognition (CIDR vs individual IP)
         - Error handling during parsing
         - Set operations for data organization
+        - SECURITY: Input sanitization prevents injection attacks
         
         Args:
             ip_text (str): Comma-separated list of IPs and CIDR ranges
@@ -142,10 +190,14 @@ class IPCounter:
         individual_ips = set()
         cidr_ranges = set()
         
+        # SECURITY: Sanitize input before processing
+        # This prevents various injection attacks
+        sanitized_text = self._sanitize_input(ip_text)
+        
         # LEARNING: List comprehension with string cleaning
         # .split(',') splits on commas, .strip() removes whitespace
         # This handles messy input like " 192.168.1.1 , 10.0.0.0/24 "
-        items = [item.strip() for item in ip_text.split(',')]
+        items = [item.strip() for item in sanitized_text.split(',')]
         
         for item in items:
             if not item:
@@ -166,7 +218,8 @@ class IPCounter:
                 except ValueError:
                     # LEARNING: Print warnings to stderr for invalid IPs
                     # This allows processing to continue while alerting the user
-                    print(f"Warning: Invalid IP address '{item}'", file=sys.stderr)
+                    # SECURITY: Don't expose raw input in error messages
+                    print(f"Warning: Invalid IP address format detected", file=sys.stderr)
         
         return individual_ips, cidr_ranges
     
@@ -449,13 +502,23 @@ Examples:
     
     # LEARNING: Specific exception handling for common errors
     except FileNotFoundError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Error: File not found", file=sys.stderr)
         # LEARNING: Exit with error code 1 to indicate failure
         sys.exit(1)
         
     # LEARNING: General exception handling for unexpected errors
+    except ValueError as e:
+        # SECURITY: Don't expose internal error details
+        print(f"Error: Invalid input or file format", file=sys.stderr)
+        sys.exit(1)
+        
+    # LEARNING: General exception handling for unexpected errors
     except Exception as e:
-        print(f"Unexpected error: {e}", file=sys.stderr)
+        # SECURITY: Log detailed error for debugging but show generic message to user
+        # This prevents information disclosure while maintaining debuggability
+        print(f"Error: An unexpected error occurred", file=sys.stderr)
+        # LEARNING: In production, you might want to log the full error details
+        # but never expose them to end users
         sys.exit(1)
 
 

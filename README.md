@@ -232,6 +232,7 @@ IP_Address_Toolkit/
 ├── requirements.txt          # Python dependencies
 ├── capybara_ip_utility.bat  # Windows batch file utility
 ├── capybara_ip_utility.ps1  # Windows PowerShell utility
+├── capybara_ip_utility.sh   # macOS/Linux shell script utility
 ├── INSTALL.md               # Python installation guide
 ├── README.md                # This comprehensive guide
 ├── LICENSE                  # MIT License
@@ -274,24 +275,29 @@ The only requirement is that the license and copyright notice be preserved in al
 
 See `INSTALL.md` for detailed Python installation instructions.
 
-## Windows Utility
+## Cross-Platform Utilities
 
-For Windows users, two utility scripts are provided to simplify the workflow:
+Utility scripts are provided for different operating systems to simplify the workflow:
 
+### **Windows Users**
 - **`capybara_ip_utility.bat`** - Batch file utility (double-click to run)
 - **`capybara_ip_utility.ps1`** - PowerShell utility (run with `PowerShell -ExecutionPolicy Bypass -File .\capybara_ip_utility.ps1`)
+
+### **macOS/Linux Users**
+- **`capybara_ip_utility.sh`** - Shell script utility (run with `./capybara_ip_utility.sh`)
 
 **Requirements:**
 - Python 3.6+ installed on the system
 - Python executable in PATH or common installation locations
-- Windows 10/11
+- Windows 10/11, macOS 10.14+, or Linux
 
 **Setup:**
 1. Ensure Python is installed (see `INSTALL.md`)
 2. Place utility files in the same directory as Python scripts
-3. Run the utility of your choice
+3. **Windows:** Run the `.bat` or `.ps1` file
+4. **macOS/Linux:** Make executable with `chmod +x capybara_ip_utility.sh`, then run with `./capybara_ip_utility.sh`
 
-The utility will automatically find Python and guide you through the complete workflow.
+The utilities will automatically find Python and guide you through the complete workflow.
 
 ---
 

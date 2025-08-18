@@ -2,6 +2,9 @@
 """
 IP Address Extractor - A Learning Tool for Cybersecurity Professionals
 
+Copyright (c) 2024 IP Address Parsing Solution
+Licensed under the MIT License - see LICENSE file for details.
+
 This script demonstrates several intermediate to advanced Python concepts while providing
 practical IP address extraction functionality. It's designed to help security professionals
 learn Python while solving real-world problems.

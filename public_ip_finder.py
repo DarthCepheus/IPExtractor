@@ -2,6 +2,9 @@
 """
 Public IP Finder - A Learning Tool for Cybersecurity Professionals
 
+Copyright (c) 2024 IP Address Parsing Solution
+Licensed under the MIT License - see LICENSE file for details.
+
 This script demonstrates several important Python concepts while providing practical
 IP address filtering functionality. It's designed to help security professionals
 learn Python while solving real-world network analysis problems.

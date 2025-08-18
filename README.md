@@ -1,6 +1,10 @@
 # IP Address Parsing Solution
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A comprehensive set of Python scripts for cleaning, analyzing, and organizing IP address lists from clients. Perfect for security analysts, network engineers, and anyone who needs to process messy IP lists into clean, professional output.
+
+**License:** This project is open source and available under the [MIT License](LICENSE). Feel free to use, modify, and distribute as needed.
 
 ## What This Toolkit Does
 
@@ -230,6 +234,8 @@ IP_Address_Toolkit/
 ├── capybara_ip_utility.ps1  # Windows PowerShell utility
 ├── INSTALL.md               # Python installation guide
 ├── README.md                # This comprehensive guide
+├── LICENSE                  # MIT License
+├── CONTRIBUTING.md          # Contribution guidelines
 └── tests/                   # Test files and sample data
     ├── comprehensive_test.txt
     ├── overlap_test.txt
@@ -250,6 +256,19 @@ IP_Address_Toolkit/
 
 - **Python 3.6+** (included in most modern systems)
 - **Optional:** `pandas` and `openpyxl` for Excel file support
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+The MIT License is a permissive license that allows for:
+- Commercial use
+- Modification
+- Distribution
+- Private use
+- Patent use
+
+The only requirement is that the license and copyright notice be preserved in all copies or substantial portions of the software.
 
 ## Installation
 

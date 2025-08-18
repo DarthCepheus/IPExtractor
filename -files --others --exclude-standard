@@ -1,0 +1,5 @@
+[33m1f8d8a6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix PowerShell syntax errors in capybara_ip_utility.ps1
+[33m27d2b83[m Add comprehensive security analysis document
+[33mdddc813[m Add comprehensive security enhancements and educational comments to private_ip_finder.py
+[33m8accb40[m Add comprehensive security enhancements and educational comments to public_ip_finder.py
+[33m36b65b1[m Add comprehensive security enhancements to IP extractor and counter scripts
